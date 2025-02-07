@@ -6,17 +6,23 @@ use App\Http\Controllers\ProductoCategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\VentaCategoriaController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Middleware\ProductoEnCaja;
+use App\Models\Venta;
 
 Route::get('/', [ProductoController::class, 'index'])->name('producto.index');
 
 //carrito
 Route::get('/add-carrito', [CarritoController::class, 'add'])->name('carrito.add');
+Route::get('/quitar/{indice}', [CarritoController::class, 'quitar'])->name('carrito.quitar');
 
 //producto
 Route::get('/agregar/producto', [ProductoController::class, 'formAgregar'])->name('producto.formproducto');
 Route::post('/agregar/producto', [ProductoController::class, 'store'])->name('producto.store');
 Route::get('/productos', [ProductoController::class, 'index'])->name('producto.index');
+Route::get('/producto/{id}/editar', [ProductoController::class, 'editForm'])->name('producto.editform');
 
 //categoria productos
 Route::get('/agregar/categoria/producto', [ProductoCategoriaController::class, 'formStore'])->name('pcategoria.formstore');
@@ -35,3 +41,18 @@ Route::post('/agregar/marca', [MarcaController::class, 'store'])->name('marca.st
 //proveedores
 Route::post('/agregar/proveedor', [ProveedorController::class, 'store'])->name('proveedor.store');
 Route::get('/borrar/proveedor/{id}', [ProveedorController::class, 'destroy'])->name('proveedor.destroy');
+
+//venta
+Route::get('/venta', [VentaController::class, 'index'])->name('venta.index')->middleware(ProductoEnCaja::class);
+Route::post('/venta-agg-cliente', [VentaController::class, 'addCliente'])->name('venta.addcliente');
+
+
+//debug
+Route::get('/debug1', function(){
+    Session()->flush();
+    return  redirect('/');
+});
+
+Route::get('/debug2', function(){
+    return view('debug.index');
+});

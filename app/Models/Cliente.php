@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
-    protected $fillable = [
-        'cliente_id', 	
-        'vendedor_id', 	
-        'forma_pago_id', 	
-        'servicio_id', 	
-        'venta_categoria_id'
+    public $fillable = [
+        'nombre', 
+        'apellido', 	
+        'telefono', 
+        'doc'
     ];
 
     public function ventas()

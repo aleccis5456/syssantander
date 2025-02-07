@@ -25,7 +25,7 @@ class ProductoController extends Controller
         ]);
     }
 
-    public function store(Request $request){                
+    public function store(Request $request){        
         $request->validate([            
             'nombre' => 'required|string',
             'marca' => 'nullable|exists:marcas,id',
@@ -35,10 +35,11 @@ class ProductoController extends Controller
             'stock' => 'nullable|numeric',
             'stock_min' => 'nullable|numeric',
             'categoria_id' => 'nullable|exists:categoria_productos,id',
+            'proveedor_id' => 'nullable|exists:proveedores,id'
         ]);
 
-        //try{
-            $producto = Producto::create([
+        try{
+            Producto::create([
                 'nombre' => $request->nombre, 	
                 'marca_id' => $request->marca ?? null, 	
                 'producto_categoria_id' => $request->categoria_id ?? null, 	
@@ -47,12 +48,17 @@ class ProductoController extends Controller
                 'precio_venta' => null, 	
                 'precio_compra' => $request->precio_compra ?? null, 	
                 'stock' => $request->stock ?? null, 	
-                'stock_minimo' => $request->stock_minimo ?? null
+                'stock_minimo' => $request->stock_minimo ?? null,
+                'proveedor_id' => $request->proveedor_id ?? null,
             ]);
 
             return back()->with('info', 'Producto creado correctamente!');
-        // }catch(\Exception $e){
-        //     return back()->with('error', 'error al crear el producto');
-        // }        
+        }catch(\Exception $e){
+            return back()->with('error', $e->getMessage());
+        }        
+    }
+
+    public function editForm(String $id){
+        return view('productos.edit');
     }
 }

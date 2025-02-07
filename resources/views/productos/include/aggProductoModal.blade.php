@@ -46,11 +46,11 @@
                     </label>
                     <div class="flex">
                         <div class="w-[330px]">
-                            <select id="countries" name="proveedor"
+                            <select id="countries" name="proveedor_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected value="">-Selecciona una opcion-</option>
-                                @foreach ($marcas as $marca)
-                                    <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
+                                @foreach ($proveedores as $proveedor)
+                                    <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
