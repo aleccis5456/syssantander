@@ -82,10 +82,10 @@
         <div class="w-1/2 border p-6 rounded-lg shadow-lg bg-white dark:bg-gray-800">
             <p class="text-center p-2 font-semibold text-xl">Datos</p>
             <p class="text-center text-lg font-semibold mb-4 text-gray-900 dark:text-white"></p>            
-            <form action="" method="POST">
+            <form action="{{ route('venta.crearventa') }}" method="POST">
                 @csrf
-
                 <div class="mb-8">
+                    <input type="hidden" name="total" value="{{ App\Helpers\helper::stats()['total_pagar'] }}">
                     <label for="cliente"
                         class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Datos para la factura:</label>
                     <div class="flex items-center">
@@ -119,9 +119,23 @@
                         <option selected>-Selecciona un método de pago-</option>
                         <option value="tc">Tarjeta de crédito</option>
                         <option value="td">Tarjeta de débito</option>
+                        <option value="tf">Transferencia</option>
                         <option value="ef">Efectivo</option>                        
                     </select>
                 </div>             
+
+                <div class="mb-8">
+                    <label for="tipo_venta" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+                        Tipo de Venta:
+                    </label>
+                    <select id="tipo_venta" name="tipo_venta"
+                        class="w-full p-2 bg-gray-50 border rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600">
+                        <option selected>-Selecciona el tipo de venta-</option>                                      
+                        @foreach ($tipoVentas as $tipoVenta)
+                            <option value="{{ $tipoVenta->id }}">{{$tipoVenta->nombre}}</option>
+                        @endforeach                        
+                    </select>
+                </div>            
 
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>
@@ -129,12 +143,15 @@
                         class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format(App\Helpers\helper::stats()['total_pagar'], 0, ',', '.') }}
                         Gs.</span>
                 </div>
+            
+                @include('venta.includes.confirmVentaModal')
                 <!-- Botones de acción -->
                 <div class="flex justify-end space-x-4">
                     <button onclick="openVentaModal(event)" type="button" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                         Confirmar
                     </button>
                 </div>                
+                
             </form>
         </div>
 

@@ -17,6 +17,12 @@
                     <input type="text" id="nombre"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5"
                         name="nombre"  />
+
+                        <label for="codigo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Codigo</label>
+                        <input type="text" id="codigo"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5"
+                            name="codigo"  />
                 </div>
                 <div class="mb-5">
                     <label for="marcas" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

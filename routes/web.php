@@ -23,6 +23,7 @@ Route::get('/agregar/producto', [ProductoController::class, 'formAgregar'])->nam
 Route::post('/agregar/producto', [ProductoController::class, 'store'])->name('producto.store');
 Route::get('/productos', [ProductoController::class, 'index'])->name('producto.index');
 Route::get('/producto/{id}/editar', [ProductoController::class, 'editForm'])->name('producto.editform');
+Route::post('/editar/producto', [ProductoController::class, 'edit'])->name('producto.edit');
 
 //categoria productos
 Route::get('/agregar/categoria/producto', [ProductoCategoriaController::class, 'formStore'])->name('pcategoria.formstore');
@@ -45,6 +46,7 @@ Route::get('/borrar/proveedor/{id}', [ProveedorController::class, 'destroy'])->n
 //venta
 Route::get('/venta', [VentaController::class, 'index'])->name('venta.index')->middleware(ProductoEnCaja::class);
 Route::post('/venta-agg-cliente', [VentaController::class, 'addCliente'])->name('venta.addcliente');
+Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.crearventa');
 
 
 //debug
