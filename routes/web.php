@@ -24,6 +24,7 @@ Route::post('/agregar/producto', [ProductoController::class, 'store'])->name('pr
 Route::get('/productos', [ProductoController::class, 'index'])->name('producto.index');
 Route::get('/producto/{id}/editar', [ProductoController::class, 'editForm'])->name('producto.editform');
 Route::post('/editar/producto', [ProductoController::class, 'edit'])->name('producto.edit');
+Route::get('/agregar/producto/search', [ProductoController::class, 'buscarProducto'])->name('producto.buscarProducto');
 
 //categoria productos
 Route::get('/agregar/categoria/producto', [ProductoCategoriaController::class, 'formStore'])->name('pcategoria.formstore');
@@ -49,6 +50,10 @@ Route::post('/venta-agg-cliente', [VentaController::class, 'addCliente'])->name(
 Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.crearventa');
 
 
+//ventas
+Route::get('/ventas', [VentaController::class, 'ventas'])->name('venta.ventas');
+Route::get('/ventas/search', [VentaController::class, 'busqueda'])->name('venta.busqueda');
+
 //debug
 Route::get('/debug1', function(){
     Session()->flush();
@@ -57,4 +62,8 @@ Route::get('/debug1', function(){
 
 Route::get('/debug2', function(){
     return view('debug.index');
+});
+
+Route::get('/debug3', function(){
+    dd(session('carrito'));
 });

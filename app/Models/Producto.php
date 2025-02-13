@@ -36,4 +36,8 @@ class Producto extends Model
     public function marca(){
         return $this->belongsTo(Marca::class, 'marca_id');
     }
+
+    public function ventaProducto(){
+        return $this->hasMany(VentaProducto::class);
+    }
 }

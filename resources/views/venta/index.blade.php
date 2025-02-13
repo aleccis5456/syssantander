@@ -116,7 +116,7 @@
                     </label>
                     <select id="metodo_pago" name="metodo_pago"
                         class="w-full p-2 bg-gray-50 border rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600">
-                        <option selected>-Selecciona un método de pago-</option>
+                        <option value="" selected>-Selecciona un método de pago-</option>
                         <option value="tc">Tarjeta de crédito</option>
                         <option value="td">Tarjeta de débito</option>
                         <option value="tf">Transferencia</option>
@@ -130,7 +130,7 @@
                     </label>
                     <select id="tipo_venta" name="tipo_venta"
                         class="w-full p-2 bg-gray-50 border rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600">
-                        <option selected>-Selecciona el tipo de venta-</option>                                      
+                        <option value="" selected>-Selecciona el tipo de venta-</option>                                      
                         @foreach ($tipoVentas as $tipoVenta)
                             <option value="{{ $tipoVenta->id }}">{{$tipoVenta->nombre}}</option>
                         @endforeach                        

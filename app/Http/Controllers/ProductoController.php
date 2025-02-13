@@ -117,4 +117,21 @@ class ProductoController extends Controller
         }        
         return redirect()->route('producto.index')->with('info', 'producto actualizado');
     }
+
+    public function buscarProducto(Request $request){
+        $filtro = $request->query('q');
+        $query = Producto::query();
+
+        $query->whereLike('nombre', "%$filtro%");
+        
+        $productos = $query->get();
+        
+        return view('productos.agregar', [
+            'productos' => $productos,
+            'marcas' => Marca::all(),
+            'proveedores' => Proveedor::all(),
+            'cProductos' => CategoriaProducto::all(),
+            'q' => $filtro
+        ]);
+    }
 }

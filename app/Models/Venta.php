@@ -9,10 +9,14 @@ class Venta extends Model
     public $fillable = [
         'cliente_id', 	
         'vendedor_id', 	
-        'forma_pago_id',	
+        'forma_pago_id',
+        'forma_pago',
         'servicio_id', 	
-        'venta_categoria_id'
+        'venta_categoria_id', 	
+        'total'
     ];
+
+    protected $table = 'ventas';
 
     public function cliente()
     {
@@ -42,5 +46,9 @@ class Venta extends Model
     public function detalleVentas()
     {
         return $this->hasMany(DetalleVenta::class);
+    }
+
+    public function ventaProducto(){
+        return $this->hasMany(VentaProducto::class);
     }
 }
