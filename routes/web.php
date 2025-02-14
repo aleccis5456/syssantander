@@ -25,6 +25,7 @@ Route::get('/productos', [ProductoController::class, 'index'])->name('producto.i
 Route::get('/producto/{id}/editar', [ProductoController::class, 'editForm'])->name('producto.editform');
 Route::post('/editar/producto', [ProductoController::class, 'edit'])->name('producto.edit');
 Route::get('/agregar/producto/search', [ProductoController::class, 'buscarProducto'])->name('producto.buscarProducto');
+Route::get('/producto/search', [ProductoController::class, 'indexBuscador'])->name('producto.indexBuscador');
 
 //categoria productos
 Route::get('/agregar/categoria/producto', [ProductoCategoriaController::class, 'formStore'])->name('pcategoria.formstore');
@@ -53,6 +54,7 @@ Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.
 //ventas
 Route::get('/ventas', [VentaController::class, 'ventas'])->name('venta.ventas');
 Route::get('/ventas/search', [VentaController::class, 'busqueda'])->name('venta.busqueda');
+Route::get('/ventas/fechas', [VentaController::class, 'filtroFechas'])->name('venta.filtrofechas');
 
 //debug
 Route::get('/debug1', function(){

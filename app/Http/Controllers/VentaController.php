@@ -97,8 +97,8 @@ class VentaController extends Controller
 
     public function ventas(){
         return view('venta.ventas', [
-            'productos' => VentaProducto::orderByDesc('id')->get(),                        
-            'ventas' => Venta::orderByDesc('id')->get(),
+            'productos' => VentaProducto::orderByDesc('id')->paginate(8),                        
+            'ventas' => Venta::orderByDesc('id')->paginate(8),
         ]);
 
     }
@@ -106,16 +106,57 @@ class VentaController extends Controller
     public function busqueda(Request $request){
         $filtro = $request->query('b') ?? '';
         
+        // Obtener las ventas que coinciden con el nombre o apellido del cliente
         $ventas = Venta::join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
                         ->where('clientes.nombre', 'like', "%$filtro%")
                         ->orWhere('clientes.apellido', 'like', "%$filtro%")
-                        ->select('ventas.*')->get();
+                        ->select('ventas.*')
+                        ->get();
+    
+        // Obtener los IDs de las ventas que tienen productos que coinciden con la búsqueda
+        $ventaIdsConProductos = VentaProducto::join('productos', 'productos.id', '=', 'venta_producto.producto_id')
+                                            ->where('productos.nombre', 'like', "%$filtro%")
+                                            ->orWhere('productos.codigo', 'like', "$filtro")
+                                            ->pluck('venta_producto.venta_id')
+                                            ->unique();
         
+        // Si hay ventas que coinciden con la búsqueda de productos, filtrar las ventas
+        if ($ventaIdsConProductos->isNotEmpty()) {
+            $ventas = Venta::whereIn('id', $ventaIdsConProductos)->get();
+        }
         
-        return view('venta.ventas',[
-            'productos' => VentaProducto::orderByDesc('id')->get(),
+        // Obtener todos los productos relacionados con las ventas filtradas
+        $productos = VentaProducto::whereIn('venta_id', $ventas->pluck('id'))
+                                //  ->join('productos', 'productos.id', '=', 'venta_producto.producto_id')
+                                //  ->select('venta_producto.*')
+                                 ->get();
+    
+        // Si no hay ventas filtradas, mostrar todas las ventas y productos
+        if ($ventas->isEmpty()) {
+            $ventas = Venta::all();
+            $productos = VentaProducto::all();            
+        }
+    
+        return view('venta.ventas', [
             'ventas' => $ventas,
+            'productos' => $productos,
             'b' => $filtro
+        ]);
+    }
+
+    public function filtroFechas(Request $request){
+        $desde = $request->query('desde');
+        $hasta = $request->query('hasta');
+
+        $ventas = Venta::where('created_at', '>=', $desde)
+                        ->where('created_at','<=', $hasta)
+                        ->paginate(8);
+
+        return view('venta.ventas', [
+            'ventas' => $ventas,
+            'productos' => Producto::all(),
+            'desde' => $desde,
+            'hasta' => $hasta
         ]);
     }
 }

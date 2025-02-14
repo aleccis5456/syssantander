@@ -3,21 +3,37 @@
 @section('contenido')
     <div class="relative overflow-x-auto">
         <p class="font-semibold">Buscar Ventas</p>
-        <div class="py-4">
-            <form action="{{ route('venta.busqueda') }}" method="get">
-                <div class="flex items-center">
-                    <input name="b" value="{{ $b ?? '' }}" type="text" placeholder="producto o cliente"
-                        class="bg-gray-100 h-[35px] border border-gray-100 rounded-lg shadow-md focus:ring-gray-100 focus:border-gray-800">
-                    <button class="ml-1 px-2 py-1 bg-gray-800 rounded-lg shadow-md focus:ring-gray-100 focus:border-none">
-                        <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
-                        </svg>
-                    </button>
-                </div>
-            </form>
+        <div class="py-4 flex">
+            <div>
+                <form action="{{ route('venta.busqueda') }}" method="get">
+                    <div class="flex items-center">
+                        <input name="b" value="{{ $b ?? '' }}" type="text" placeholder="producto o cliente"
+                            class="bg-gray-100 h-[35px] border border-gray-100 rounded-lg shadow-md focus:ring-gray-100 focus:border-gray-800">
+                        <button
+                            class="ml-1 px-2 py-1 bg-gray-800 rounded-lg shadow-md focus:ring-gray-100 focus:border-none">
+                            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                    d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="px-6">
+                <form action="{{ route('venta.filtrofechas') }}">
+                    <span class="pr-2 font-semibold text-sm">Filtrar desde: </span>
+                    <input class="rounded-lg border border-gray-100 shadow-lg bg-gray-100" type="date" name="desde"
+                        id="" value="{{ $desde ?? '' }}">
+                    <span class="px-2  font-semibold text-sm">Hasta: </span>
+                    <input class="rounded-lg border border-gray-100 shadow-lg bg-gray-100" type="date" name="hasta"
+                        id="" value="{{ $hasta ?? '' }}">
+                    <button
+                        class="mx-2 px-3 py-2 border border-gray-800 rounded-lg bg-gray-800 text-white text-sm font-semibold"
+                        type="submit">Filtrar</button>
+                </form>
+            </div>
         </div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -60,14 +76,14 @@
                             @foreach ($productos as $producto)
                                 @if ($producto->venta_id == $venta->id)
                                     <p>{{ $producto->productos->nombre }}</p>
-                                @endif                                
+                                @endif
                             @endforeach
                         </td>
                         <td class="px-3 py-4">
                             @foreach ($productos as $producto)
                                 @if ($producto->venta_id == $venta->id)
                                     <p>{{ $producto->cantidad }}</p>
-                                @endif                                
+                                @endif
                             @endforeach
                         </td>
 
@@ -98,5 +114,8 @@
                 @endforeach
             </tbody>
         </table>
+        <div>
+            {{ $ventas->links() }}
+        </div>
     </div>
 @endsection

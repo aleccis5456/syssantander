@@ -16,6 +16,17 @@ class ProductoController extends Controller
         ]);
     }
 
+    public function indexBuscador(Request $request){
+        $filtro = $request->query('q');
+        $productos = Producto::whereLike('nombre', "%$filtro%")->get();
+
+        return view('productos.index', [
+            'productos' => $productos,
+            'q' => $filtro
+        ]);
+
+    }
+
     public function formAgregar(){
         return view('productos.agregar', [
             'cProductos' => CategoriaProducto::all(),
