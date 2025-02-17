@@ -115,6 +115,9 @@ class VentaController extends Controller
     {
         $q = $request->query('b') ?? '';
         $filtro = $request->query('filtro');
+        $desde = $request->query('desde');
+        $hasta = $request->query('hasta');        
+        $hasta;
 
         // Ventas filtradas por cliente
         $ventasPorCliente = Venta::join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
@@ -133,40 +136,39 @@ class VentaController extends Controller
             $ventas = Venta::where('vendedor_id', $filtro)->paginate(8);    
         }else{
             $ventas = Venta::whereIn('id', $ventasPorCliente->pluck('id')->merge($ventasPorProducto->pluck('id')))->paginate(8);
-        }        
+        }   
         
+        if($hasta != null and $desde != null){
+            if($filtro != null){
+                $ventas = Venta::where('created_at', '>=', $desde)
+                            ->where('created_at', '<=', $hasta.' 23:59:59')
+                            ->where('vendedor_id', $filtro)
+                            ->paginate(8);
+            
+            }elseif($q != null){
+                $query = Venta::whereIn('id', $ventasPorCliente->pluck('id')->merge($ventasPorProducto->pluck('id')));
+                $ventas = $query->where('created_at', '>=', $desde)
+                ->where('created_at', '<=', $hasta.' 23:59:59')
+                ->where('vendedor_id', $filtro)
+                ->paginate(8);
+            }else{
+                $ventas = Venta::where('created_at', '>=', $desde)
+                            ->where('created_at', '<=', $hasta.' 23:59:59')                            
+                            ->paginate(8);
+            }
+            
+        }                
         // Cargar productos asociados a esas ventas
         $productos = VentaProducto::whereIn('venta_id', $ventas->pluck('id'))->get();
-
-
 
         return view('venta.ventas', [
             'ventas' => $ventas,
             'productos' => $productos,
             'vendedores' => User::all(),
             'b' => $q,
-            'filtro' => $filtro
-        ]);
-    }
-
-
-    public function filtroFechas(Request $request)
-    {
-        $desde = $request->query('desde') ?? Carbon::now();
-        $hasta = $request->query('hasta') ?? Carbon::now();
-
-        $ventas = Venta::where('created_at', '>=', $desde)
-            ->where('created_at', '<=', $hasta)
-            ->paginate(8);
-
-
-        return view('venta.ventas', [
-            'ventas' => $ventas,
-            'productos' => VentaProducto::all(),
+            'filtro' => $filtro,
             'desde' => $desde,
             'hasta' => $hasta,
-            'filtro' => null,
-            'vendedores' => User::all(),
         ]);
     }
 }

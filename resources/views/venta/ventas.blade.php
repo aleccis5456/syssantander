@@ -6,7 +6,7 @@
         <p class="font-semibold pt-5 pl-1">Buscar Ventas</p>
         <div class="py-4 flex mb-4 ">
             <div class="">
-                <form action="{{ route('venta.busqueda') }}" method="get">
+                <form action="{{ route('venta.busqueda') }}" method="get">                               
                     <div class="flex items-center py-1 px-2">
                         <select name="filtro" id="" class="max-w-auto text-sm font-semibold border-none rounded-lg bg-gray-200 shadow-lg mr-1 ">
                             <option value="" {{ $filtro == null ?  'selected' : ''}}>Filtrar por:</option>  
@@ -26,10 +26,10 @@
                             </svg>
                         </button>
                     </div>
-                </form>
+                {{-- </form> --}}
             </div>
             <div class="px-6">
-                <form action="{{ route('venta.filtrofechas') }}">
+                {{-- <form action="{{ route('venta.filtrofechas') }}"> --}}
                     <span class="pr-2 font-semibold text-sm">Filtrar desde: </span>
                     <input class="rounded-lg border border-gray-100 shadow-lg bg-gray-100" type="date" name="desde"
                         id="" value="{{ $desde ?? '' }}">
@@ -42,10 +42,11 @@
                 </form>
             </div>        
         </div>
-        <p class="p-2 font-semibold">
-            Total ventas: 
-            
-        </p>
+        @if ($filtro != null)
+            <p class="p-2 font-semibold">
+                Total ventas:  {{ count($productos) }}           
+            </p>
+        @endif        
         <table class="w-full text-sm text-left rtl:text-right text-gray-700 dark:text-gray-400">
             <thead class="text-xs text-black uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="font-bold">
@@ -135,16 +136,4 @@
             {{ $ventas->links() }}
         </div>
     </div>
-
-
-<script>
-    // Selecciona el elemento <select>
-    const filtroSelect = document.getElementById('filtroSelect');
-
-    // Agrega un evento 'change'
-    filtroSelect.addEventListener('change', function() {
-        // Envía el formulario automáticamente cuando se cambia la selección
-        document.getElementById('filtroForm').submit();
-    });
-</script>
 @endsection
