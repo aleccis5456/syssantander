@@ -29,7 +29,7 @@ class CarritoController extends Controller
             $carrito[] = [
                 'producto_id' => $producto->id,
                 'nombre' => $producto->nombre,
-                'marca' => $producto->marca->nombre,
+                'marca' => $producto->marca->nombre ?? 'sin marca',
                 'precio' => $producto->precio,
                 'producto' => $producto,
                 'cantidad' => $cantidad

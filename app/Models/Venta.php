@@ -13,7 +13,8 @@ class Venta extends Model
         'forma_pago',
         'servicio_id', 	
         'venta_categoria_id', 	
-        'total'
+        'total',
+        'descripcion'
     ];
 
     protected $table = 'ventas';

@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('contenido')
-    <div class="bg-gray-200 px-10 pt-12 pb-10">
+    <div class="bg-gray-50 border border-gray-100 rounded-lg shadow-lg px-10 pt-12 pb-10">
         <p class="font-semibold pb-4">Lista de servicios y productos</p>            
             <div class="py-4">
                 <form action="{{ route('producto.indexBuscador') }}" method="get">

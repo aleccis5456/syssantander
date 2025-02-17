@@ -5,6 +5,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoCategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\VentaCategoriaController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,10 @@ Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.
 Route::get('/ventas', [VentaController::class, 'ventas'])->name('venta.ventas');
 Route::get('/ventas/search', [VentaController::class, 'busqueda'])->name('venta.busqueda');
 Route::get('/ventas/fechas', [VentaController::class, 'filtroFechas'])->name('venta.filtrofechas');
+
+//vendedor
+Route::post('/vendedor', [VendedorController::class, 'addVendedor'])->name('vendedor.addvendedor');
+Route::get('/ventas/vendedores', [VendedorController::class, 'filtrarVendedor'])->name('vendedor.filtrarvendedor');
 
 //debug
 Route::get('/debug1', function(){
