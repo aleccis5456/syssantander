@@ -63,6 +63,7 @@ class VentaController extends Controller
         DB::beginTransaction();
         try {
             $venta = Venta::create([
+                'codigo' => $this->generateRandomCode(6),
                 'cliente_id' => $request->cliente,
                 'vendedor_id' => $request->vendedor ?? null,
                 'servicio_id' => null,
@@ -92,13 +93,29 @@ class VentaController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Ocurrio un error, verifique los campos');
-            //throw new Exception($e->getMessage());
+            //return back()->with('error', 'Ocurrio un error, verifique los campos');
+            throw new Exception($e->getMessage());
         }
 
         DB::commit();
+        $carrito = session('carrito');
+        session(['ticket' => [$carrito, $venta]]);
         Session::forget('carrito');
-        return redirect('/')->with('info', 'Venta realizada');
+
+        return redirect('/')->with('ventaConfirmada', 'Venta realizada');
+    }
+
+
+    private function generateRandomCode($length)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
     }
 
     public function ventas()

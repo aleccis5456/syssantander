@@ -1,7 +1,7 @@
 <?
 namespace App\Helpers;
 
-
+use Illuminate\Support\Carbon;
 
 class Helper {
 
@@ -34,4 +34,9 @@ class Helper {
 
         return $stats;
     }
+
+    public static function formatearFecha($fecha){
+        return Carbon::parse($fecha)->format('d-m-Y');
+    }    
+
 }

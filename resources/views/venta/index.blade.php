@@ -115,7 +115,7 @@
                             @endforeach
                     </select>
                     <!-- Botón para agregar vendedor -->
-                    <button onclick="openModalUser(event)" class="p-2.5 ml-2 bg-gray-800 rounded-lg text-white"
+                    <button onclick="openModalVend(event)" class="p-2.5 ml-2 bg-gray-800 rounded-lg text-white"
                         type="button">
                         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 24 24">

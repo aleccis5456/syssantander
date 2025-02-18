@@ -5,6 +5,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoCategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\VentaCategoriaController;
 use App\Http\Controllers\VentaController;
@@ -61,16 +62,19 @@ Route::get('/ventas/fechas', [VentaController::class, 'filtroFechas'])->name('ve
 Route::post('/vendedor', [VendedorController::class, 'addVendedor'])->name('vendedor.addvendedor');
 Route::get('/ventas/vendedores', [VendedorController::class, 'filtrarVendedor'])->name('vendedor.filtrarvendedor');
 
+//ticket
+Route::get('/ticket', [TicketController::class, 'printTicket'])->name('ticket.print');
+
 //debug
 Route::get('/debug1', function(){
     Session()->flush();
     return  redirect('/');
-});
+})->name('debug');
 
 Route::get('/debug2', function(){
     return view('debug.index');
 });
 
 Route::get('/debug3', function(){
-    dd(session('carrito'));
+    dd(session('ticket'));
 });

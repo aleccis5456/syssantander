@@ -86,25 +86,15 @@ class ProductoController extends Controller
 
     public function edit(Request $request){        
         $request->validate([
-            'nombre' => 'sometimes|string',
-            'codigo' => 'sometimes|string',
-            'marca' => 'sometimes|string',
-            'proveedor' => 'sometimes|string',
-            'categoria' => 'sometimes|string',
-            'descripcion' => 'sometimes|string',
-            'precio_venta' => 'sometimes|string',
-            'precio_compra' => 'sometimes|string',
-            'stock' => 'sometimes|string'
-        ], [
-            'nombre' => 'error en el campo nombre',
-            'codigo' => 'error en el campo codigo',
-            'marca' => 'error en el campo marca',
-            'proveedor' => 'error en el campo proveedor',
-            'categoria' => 'error en el campo categoria',
-            'descripcion' => 'error en el campo descripcion',
-            'precio_venta' => 'error en el campo precio venta',
-            'precio_compra' => 'error en el campo precio compra',
-            'stock' => 'error en el campo stock',
+            'nombre' => 'sometimes',
+            'codigo' => 'sometimes',
+            'marca' => 'sometimes',
+            'proveedor' => 'sometimes',
+            'categoria' => 'sometimes',
+            'descripcion' => 'sometimes',
+            'precio_venta' => 'sometimes',
+            'precio_compra' => 'sometimes',
+            'stock' => 'sometimes'
         ]);
 
         $producto = Producto::find($request->producto_id);        

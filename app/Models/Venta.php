@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Venta extends Model
 {
     public $fillable = [
+        'codigo',
         'cliente_id', 	
         'vendedor_id', 	
         'forma_pago_id',

@@ -1,9 +1,9 @@
-<div id="modalVendedor" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+<div id="modalVend" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white w-96 rounded-lg shadow-lg p-6">
         <!-- Título y botón de cerrar -->
         <div class="flex justify-between items-center border-b pb-3">
             <h3 class="text-xl font-semibold">Agregar Vendedor</h3>
-            <button onclick="cleseModalUser()" class="text-gray-600 hover:text-gray-900">
+            <button onclick="closeModalVend()" class="text-gray-600 hover:text-gray-900">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                   </svg>
@@ -34,13 +34,13 @@
     </div>
 </div>        
     <script>        
-    function openModalUser(event) {
+    function openModalVend(event) {
         event.preventDefault();
-        document.getElementById('modalVendedor').classList.remove('hidden');
+        document.getElementById('modalVend').classList.remove('hidden');
         }
 
-        function cleseModalUser() {
-            document.getElementById('modalVendedor').classList.add('hidden');
+        function closeModalVend() {
+            document.getElementById('modalVend').classList.add('hidden');
         }   
 
         $(document).ready(function() {
