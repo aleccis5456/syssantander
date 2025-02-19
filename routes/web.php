@@ -57,6 +57,7 @@ Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.
 Route::get('/ventas', [VentaController::class, 'ventas'])->name('venta.ventas');
 Route::get('/ventas/search', [VentaController::class, 'busqueda'])->name('venta.busqueda');
 Route::get('/ventas/fechas', [VentaController::class, 'filtroFechas'])->name('venta.filtrofechas');
+Route::get('/ventas/categoria', [VentaController::class, 'categoria'])->name('venta.categoria');
 
 //vendedor
 Route::post('/vendedor', [VendedorController::class, 'addVendedor'])->name('vendedor.addvendedor');

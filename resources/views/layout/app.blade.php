@@ -29,10 +29,7 @@
         @include('layout.includes.aside')
     </aside>
 
-    <div class="p-4 sm:ml-64">
-        <a href="{{ route('ticket.print') }}">
-            <button>imprimir</button>
-        </a>
+    <div class="p-4 sm:ml-64">        
         @yield('contenido')
     </div>
 

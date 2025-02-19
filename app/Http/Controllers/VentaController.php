@@ -18,7 +18,6 @@ class VentaController extends Controller
 {
     public function index()
     {
-
         return view('venta.index', [
             'clientes' => Cliente::all(),
             'tipoVentas' => CategoriaVenta::all(),
@@ -121,20 +120,27 @@ class VentaController extends Controller
     public function ventas()
     {
         return view('venta.ventas', [
-            'productos' => VentaProducto::orderByDesc('id')->paginate(8),
-            'ventas' => Venta::orderByDesc('id')->paginate(8),
+            'productos' => VentaProducto::orderByDesc('id')->latest()
+            ->take(10)
+            ->get(),
+            'ventas' => Venta::orderByDesc('id') ->latest()
+            ->take(10)
+            ->get(),
             'vendedores' => User::all(),
-            'filtro' => null
+            'filtro' => null,
+            'categorias' => CategoriaVenta::all(),
+            
         ]);
     }
 
     public function busqueda(Request $request)
     {
+        //dd($request);
         $q = $request->query('b') ?? '';
         $filtro = $request->query('filtro');
+        $categoria_id = $request->query('categoria_id');
         $desde = $request->query('desde');
         $hasta = $request->query('hasta');        
-        $hasta;
 
         // Ventas filtradas por cliente
         $ventasPorCliente = Venta::join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
@@ -149,34 +155,44 @@ class VentaController extends Controller
             ->select('venta_producto.venta_id as id');
 
         // Unir las ventas filtradas        
-        if($filtro != null){
-            $ventas = Venta::where('vendedor_id', $filtro)->paginate(8);    
+        if($filtro != null or $categoria_id != null){    
+            //dd(Venta::where('venta_categoria_id', $categoria_id)->get());
+            $ventas = Venta::where('vendedor_id', $filtro)
+                        ->where('venta_categoria_id', $categoria_id)                        
+                        ->get();                        
         }else{
-            $ventas = Venta::whereIn('id', $ventasPorCliente->pluck('id')->merge($ventasPorProducto->pluck('id')))->paginate(8);
+            $ventas = Venta::whereIn('id', $ventasPorCliente->pluck('id')
+                        ->merge($ventasPorProducto->pluck('id')))                        
+                        ->get();                        
         }   
         
         if($hasta != null and $desde != null){
-            if($filtro != null){
+            if($filtro != null or $categoria_id != null){
                 $ventas = Venta::where('created_at', '>=', $desde)
                             ->where('created_at', '<=', $hasta.' 23:59:59')
                             ->where('vendedor_id', $filtro)
-                            ->paginate(8);
+                            ->orWhere('venta_categoria_id', $filtro)                            
+                            ->get();                            
             
             }elseif($q != null){
-                $query = Venta::whereIn('id', $ventasPorCliente->pluck('id')->merge($ventasPorProducto->pluck('id')));
+                $query = Venta::whereIn('id', $ventasPorCliente
+                            ->pluck('id')
+                            ->merge($ventasPorProducto->pluck('id')));
                 $ventas = $query->where('created_at', '>=', $desde)
-                ->where('created_at', '<=', $hasta.' 23:59:59')
-                ->where('vendedor_id', $filtro)
-                ->paginate(8);
+                            ->where('created_at', '<=', $hasta.' 23:59:59')
+                            ->where('vendedor_id', $filtro)
+                            ->orWhere('venta_categoria_id', $filtro)                            
+                            ->get();
             }else{
                 $ventas = Venta::where('created_at', '>=', $desde)
-                            ->where('created_at', '<=', $hasta.' 23:59:59')                            
-                            ->paginate(8);
+                            ->where('created_at', '<=', $hasta.' 23:59:59')                                                        
+                            ->get();
             }
             
         }                
         // Cargar productos asociados a esas ventas
         $productos = VentaProducto::whereIn('venta_id', $ventas->pluck('id'))->get();
+        
 
         return view('venta.ventas', [
             'ventas' => $ventas,
@@ -186,6 +202,26 @@ class VentaController extends Controller
             'filtro' => $filtro,
             'desde' => $desde,
             'hasta' => $hasta,
+            'categorias' => CategoriaVenta::all(),
+        ]);
+    }
+
+    public function categoria(){
+        $ventas = Venta::where('venta_categoria_id', 1)
+               ->latest()
+               ->take(10)
+               ->get();
+
+        dd($ventas);
+        $alineaciones = Venta::where('venta_categoria_id', 2)->get();
+        $gomerias = Venta::where('venta_categoria_id', 4)->get();
+        $traslados = Venta::where('venta_categoria_id', 3)->get();
+
+        return view('venta.categorias', [
+            'ventas' => $ventas,
+            'alineaciones' => $alineaciones,
+            'gomerias' => $gomerias,
+            'traslados' => $traslados
         ]);
     }
 }
