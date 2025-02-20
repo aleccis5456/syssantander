@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Carbon;
+use PDF;
 use Illuminate\Http\Request;
 
 class VentaController extends Controller
@@ -120,22 +121,27 @@ class VentaController extends Controller
     public function ventas()
     {
         return view('venta.ventas', [
-            'productos' => VentaProducto::orderByDesc('id')->latest()
-            ->take(10)
-            ->get(),
-            'ventas' => Venta::orderByDesc('id') ->latest()
-            ->take(10)
-            ->get(),
+            'productos' => VentaProducto::orderByDesc('id')
+                                    ->latest()
+                                    ->take(10)
+                                    ->get(),
+            'ventas' => Venta::orderByDesc('id')
+                            ->latest()
+                            ->take(10)
+                            ->get(),
             'vendedores' => User::all(),
             'filtro' => null,
             'categorias' => CategoriaVenta::all(),
+            'categoria_id' => null,
+            'pdf' => false
             
         ]);
     }
 
     public function busqueda(Request $request)
-    {
+    {        
         //dd($request);
+        $flag = $request->query('flag') ?? false;        
         $q = $request->query('b') ?? '';
         $filtro = $request->query('filtro');
         $categoria_id = $request->query('categoria_id');
@@ -153,8 +159,7 @@ class VentaController extends Controller
             ->where('productos.nombre', 'like', "%$q%")
             ->orWhere('productos.codigo', 'like', "%$q%")
             ->select('venta_producto.venta_id as id');
-
-        // Unir las ventas filtradas        
+             
         if($filtro != null or $categoria_id != null){    
             //dd(Venta::where('venta_categoria_id', $categoria_id)->get());
             $ventas = Venta::where('vendedor_id', $filtro)
@@ -171,7 +176,7 @@ class VentaController extends Controller
                 $ventas = Venta::where('created_at', '>=', $desde)
                             ->where('created_at', '<=', $hasta.' 23:59:59')
                             ->where('vendedor_id', $filtro)
-                            ->orWhere('venta_categoria_id', $filtro)                            
+                            ->where('venta_categoria_id', $categoria_id)                            
                             ->get();                            
             
             }elseif($q != null){
@@ -181,7 +186,7 @@ class VentaController extends Controller
                 $ventas = $query->where('created_at', '>=', $desde)
                             ->where('created_at', '<=', $hasta.' 23:59:59')
                             ->where('vendedor_id', $filtro)
-                            ->orWhere('venta_categoria_id', $filtro)                            
+                            // ->where('venta_categoria_id', $categoria_id)                            
                             ->get();
             }else{
                 $ventas = Venta::where('created_at', '>=', $desde)
@@ -193,6 +198,24 @@ class VentaController extends Controller
         // Cargar productos asociados a esas ventas
         $productos = VentaProducto::whereIn('venta_id', $ventas->pluck('id'))->get();
         
+        if($flag == true){
+            $categoria = CategoriaVenta::where('id', $request->categoria_id)->first();              
+
+            $pdf = PDF::loadView('reportes.index', [            
+                'ventas' => $ventas,
+                'productos' => $productos,
+                'vendedores' => User::all(),
+                'b' => $q,
+                'filtro' => $filtro,
+                'desde' => $desde,
+                'hasta' => $hasta,
+                'categoria_id' => $categoria_id,
+                'categoria' => $categoria,
+                'pdf' => true
+            ]);
+
+            return $pdf->stream("reporte.pdf");
+        }
 
         return view('venta.ventas', [
             'ventas' => $ventas,
@@ -202,26 +225,9 @@ class VentaController extends Controller
             'filtro' => $filtro,
             'desde' => $desde,
             'hasta' => $hasta,
+            'categoria_id' => $categoria_id,
             'categorias' => CategoriaVenta::all(),
+            'pdf' => true
         ]);
-    }
-
-    public function categoria(){
-        $ventas = Venta::where('venta_categoria_id', 1)
-               ->latest()
-               ->take(10)
-               ->get();
-
-        dd($ventas);
-        $alineaciones = Venta::where('venta_categoria_id', 2)->get();
-        $gomerias = Venta::where('venta_categoria_id', 4)->get();
-        $traslados = Venta::where('venta_categoria_id', 3)->get();
-
-        return view('venta.categorias', [
-            'ventas' => $ventas,
-            'alineaciones' => $alineaciones,
-            'gomerias' => $gomerias,
-            'traslados' => $traslados
-        ]);
-    }
+    } 
 }

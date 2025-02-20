@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProductoCategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -65,6 +66,10 @@ Route::get('/ventas/vendedores', [VendedorController::class, 'filtrarVendedor'])
 
 //ticket
 Route::get('/ticket', [TicketController::class, 'printTicket'])->name('ticket.print');
+
+//exportar a pdf
+Route::post('/exportarPDF', [PDFController::class, 'generarPDF'])->name('pdf.generarpdf');
+
 
 //debug
 Route::get('/debug1', function(){

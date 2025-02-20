@@ -60,8 +60,7 @@
                                         @endif                                        
                                 </td>
                                 <td class="px-2 py-3">
-                                    {{-- {{ number_format($item['precio'] != 0 ? $item['precio'] : $item['precio'], 0, ',', '.') }}
-                                    Gs. --}}
+                                    
                                     @php
                                         $total = $item['precio'] * $item['cantidad']
                                     @endphp
