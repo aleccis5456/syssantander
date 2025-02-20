@@ -70,6 +70,8 @@ Route::get('/ticket', [TicketController::class, 'printTicket'])->name('ticket.pr
 //exportar a pdf
 Route::post('/exportarPDF', [PDFController::class, 'generarPDF'])->name('pdf.generarpdf');
 
+//gastos
+
 
 //debug
 Route::get('/debug1', function(){

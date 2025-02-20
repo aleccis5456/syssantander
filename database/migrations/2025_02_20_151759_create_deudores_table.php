@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gastos', function (Blueprint $table) {
+        Schema::create('deudores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->nullable();
-            $table->integer('monto');
+            $table->string('nombre');
+            $table->integer('deduda_total');
+            $table->integer('pago_inicial')->nullable();
+            $table->integer('saldo');
             $table->string('descripcion');
+            $table->string('estado');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gastos');
+        Schema::dropIfExists('deudores');
     }
 };

@@ -36,8 +36,8 @@
         @endif
         <li>
             <a href="{{ route('producto.index') }}"
-                class="flex items-center p-2 rounded-lg group
-             {{ Route::is('producto.index') ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                class="flex items-center p-2 rounded-lg group"/>
+             {{-- {{ Route::is('producto.index') ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"> --}}
                 <svg class="w-5 h-5 transition duration-75 dark:text-gray-400 dark:group-hover:text-white {{ Route::is('producto.index') ? 'group-hover:text-gray-900' : 'text-gray-500' }}"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                     <path

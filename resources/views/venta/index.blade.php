@@ -2,9 +2,9 @@
 
 @section('contenido')
     <div class="flex flexcol">
-        <div class="w-1/2 border m-5 rounded-lg shadow-lg bg-white dark:bg-gray-800">
+        <div class="w-1/2 border p-3 m-2 rounded-lg shadow-lg bg-white dark:bg-gray-800">
             <div class="relative overflow-x-auto p-2">
-                <p class="text-center p-2 font-semibold text-xl">Productos</p>
+                <p class="text-center p-2 mb-2 font-semibold text-xl">Productos</p>
                 <table class=" border-none w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>                            
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div class="w-1/2 border p-6 rounded-lg shadow-lg bg-white dark:bg-gray-800">
+        <div class="w-1/2 border p-3 m-2 rounded-lg shadow-lg bg-white dark:bg-gray-800">
             <p class="text-center p-2 font-semibold text-xl">Datos</p>            
             <form action="{{ route('venta.crearventa') }}" method="POST">
                 @csrf
