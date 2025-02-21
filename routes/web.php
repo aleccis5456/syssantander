@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GastoController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PDFController;
@@ -71,7 +72,8 @@ Route::get('/ticket', [TicketController::class, 'printTicket'])->name('ticket.pr
 Route::post('/exportarPDF', [PDFController::class, 'generarPDF'])->name('pdf.generarpdf');
 
 //gastos
-
+Route::get('/gastos', [GastoController::class, 'index'])->name('gastos.index');
+Route::post('/gastos', [GastoController::class, 'store'])->name('gasto.store');
 
 //debug
 Route::get('/debug1', function(){
