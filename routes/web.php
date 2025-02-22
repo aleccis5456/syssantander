@@ -74,6 +74,7 @@ Route::post('/exportarPDF', [PDFController::class, 'generarPDF'])->name('pdf.gen
 //gastos
 Route::get('/gastos', [GastoController::class, 'index'])->name('gastos.index');
 Route::post('/gastos', [GastoController::class, 'store'])->name('gasto.store');
+Route::get('/gastos/filtro', [GastoController::class, 'filtrar'])->name('gasto.filtro');
 
 //debug
 Route::get('/debug1', function(){

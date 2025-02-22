@@ -11,6 +11,7 @@ class GastoController extends Controller
     public function index(){
         return view('gastos.index', [
             'gastos' => Gasto::all(),
+            'fechas' => false
         ]);
     }
 
@@ -34,6 +35,22 @@ class GastoController extends Controller
     }
 
     public function filtrar(Request $request){
-        dd($request);
+        $desde = $request->desde;
+        $hasta = $request->hasta;
+    
+        $gastos = Gasto::where('created_at', '>=', "$desde")
+                        ->where('created_at', '<=', "$hasta". ' 23:59:59')
+                        ->get();
+
+        //dd($gastos);
+        return view('gastos.index', [
+            'gastos' => $gastos,
+            'desde' => $desde,
+            'hasta' => $hasta,
+            'fechas' => true
+        ]);
     }
 }
+
+
+//->where('created_at', '<=', $hasta.' 23:59:59')                                                        

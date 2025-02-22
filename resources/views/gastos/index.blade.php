@@ -35,7 +35,11 @@
                 class="ml-6 border border-gray-900 bg-gray-800 py-1 px-2 rounded-lg text-white font-semibold">
                 Filtrar
             </button>
-
+            @if ($fechas == true)
+            <div class="px-6 py-2">
+                <b>desde: </b> {{ App\Helpers\helper::formatearFecha($desde) }} <b>hasta:</b> {{ App\Helpers\helper::formatearFecha($hasta) }}
+            </div>    
+            @endif        
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -53,7 +57,7 @@
                                     {{ $gasto->descripcion }}
                                 </th>
                                 <td class="px-6 py-4">{{ $gasto->monto }}</td>
-                                <td class="px-6 py-4">{{ $gasto->created_at }}</td>
+                                <td class="px-6 py-4">{{ App\Helpers\helper::formatearFecha($gasto->created_at) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -64,7 +68,7 @@
 
     <div id="modalGastos" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-gray-100 min-h-auto overflow-y-auto rounded-lg relative p-6">
-            <form action="" method="get" class="mb-4">
+            <form action="{{ route('gasto.filtro') }}" method="get" class="mb-4">
                 <div class="flex flex-col gap-4 m-10">
                     <div class="flex flex-col">
                         <label class="font-semibold text-sm mb-1" for="desde">Desde:</label>
@@ -81,9 +85,8 @@
                         <button
                             class="m-2 px-4 py-2 border border-gray-800 rounded-lg bg-gray-800 text-white text-sm font-semibold"
                             type="submit">Filtrar
-                        </button >
-
-                        <button onclick="closeModalGastos()" class="m-2 px-4 py-2 border border-red-800 rounded-lg bg-red-800 text-white text-sm font-semibold">
+                        </button >                        
+                        <button type="button" onclick="closeModalGastos()" class="m-2 px-4 py-2 border border-red-800 rounded-lg bg-red-800 text-white text-sm font-semibold">
                             Cerrar
                         </button>
                     </div>

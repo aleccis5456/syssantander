@@ -147,7 +147,7 @@ class VentaController extends Controller
         $categoria_id = $request->query('categoria_id');
         $desde = $request->query('desde');
         $hasta = $request->query('hasta');        
-
+        
         // Ventas filtradas por cliente
         $ventasPorCliente = Venta::join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
             ->where('clientes.nombre', 'like', "%$q%")
