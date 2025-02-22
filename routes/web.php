@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\DeudoresController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProductoCategoriaController;
@@ -75,6 +76,9 @@ Route::post('/exportarPDF', [PDFController::class, 'generarPDF'])->name('pdf.gen
 Route::get('/gastos', [GastoController::class, 'index'])->name('gastos.index');
 Route::post('/gastos', [GastoController::class, 'store'])->name('gasto.store');
 Route::get('/gastos/filtro', [GastoController::class, 'filtrar'])->name('gasto.filtro');
+
+//deudores
+Route::get('/deudores', [DeudoresController::class, 'index'])->name('deudores.index');
 
 //debug
 Route::get('/debug1', function(){

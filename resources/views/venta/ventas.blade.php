@@ -158,7 +158,7 @@
                             {{ number_format($venta->total, 0, ',', '.') }} Gs.
                         </td>
                         <td class="px-3 py-4">
-                            {{ App\Helpers\helper::formatearFecha($venta->created_at) }}
+                            {{ App\Helpers\Helper::formatearFecha($venta->created_at) }}
                         </td>
                     </tr>
                 @endforeach

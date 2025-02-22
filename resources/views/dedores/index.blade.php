@@ -31,15 +31,15 @@
             <p class="p-6 font-semibold text-lg">Lista de gastos</p>
 
             <!-- formulario de filtrar por fecha -->
-            <button onclick="openModalGastos(event)"
+            <button onclick="openModalDeudores(event)"
                 class="ml-6 border border-gray-900 bg-gray-800 py-1 px-2 rounded-lg text-white font-semibold">
                 Filtrar
             </button>
-            @if ($fechas == true)
+            {{-- @if ($fechas == true)
             <div class="px-6 py-2">
                 <b>desde: </b> {{ App\Helpers\Helper::formatearFecha($desde) }} <b>hasta:</b> {{ App\Helpers\helper::formatearFecha($hasta) }}
             </div>    
-            @endif        
+            @endif         --}}
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -50,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($gastos as $gasto)
+                        {{-- @foreach ($gastos as $gasto)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -59,14 +59,14 @@
                                 <td class="px-6 py-4">{{ $gasto->monto }}</td>
                                 <td class="px-6 py-4">{{ App\Helpers\Helper::formatearFecha($gasto->created_at) }}</td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <div id="modalGastos" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div id="modalDeudores" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
         <div class="bg-gray-100 min-h-auto overflow-y-auto rounded-lg relative p-6">
             <form action="{{ route('gasto.filtro') }}" method="get" class="mb-4">
                 <div class="flex flex-col gap-4 m-10">
@@ -86,7 +86,7 @@
                             class="m-2 px-4 py-2 border border-gray-800 rounded-lg bg-gray-800 text-white text-sm font-semibold"
                             type="submit">Filtrar
                         </button >                        
-                        <button type="button" onclick="closeModalGastos()" class="m-2 px-4 py-2 border border-red-800 rounded-lg bg-red-800 text-white text-sm font-semibold">
+                        <button type="button" onclick="closeModalDeudores()" class="m-2 px-4 py-2 border border-red-800 rounded-lg bg-red-800 text-white text-sm font-semibold">
                             Cerrar
                         </button>
                     </div>
@@ -97,13 +97,14 @@
     
 
     <script>
-        function openModalGastos(event) {
+        function openModalDeudores(event) {
             event.preventDefault();
-            document.getElementById('modalGastos').classList.remove('hidden');
+            document.getElementById('modalDeudores').classList.remove('hidden');
         }
 
-        function closeModalGastos() {
-            document.getElementById('modalGastos').classList.add('hidden');
+        function closeModalDeudores() {
+            document.getElementById('modalDeudores').classList.add('hidden');
         }
     </script>
 @endsection
+ 
