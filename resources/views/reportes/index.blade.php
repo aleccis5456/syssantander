@@ -21,7 +21,7 @@
 </head>
 <body>
     <h1>Reporte de  {{ $categoria->nombre ?? 'Semana' }}</h1>
-    <p>Fecha: {{ App\Helpers\helper::formatearFecha($desde)}} hasta {{ App\Helpers\helper::formatearFecha($hasta) }}</p>    
+    <p>Fecha: {{ App\Helpers\Helper::formatearFecha($desde)}} hasta {{ App\Helpers\Helper::formatearFecha($hasta) }}</p>    
 
     <table>
         <thead>

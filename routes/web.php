@@ -55,12 +55,12 @@ Route::get('/venta', [VentaController::class, 'index'])->name('venta.index')->mi
 Route::post('/venta-agg-cliente', [VentaController::class, 'addCliente'])->name('venta.addcliente');
 Route::post('/venta-crear',[VentaController::class, 'crearVenta'])->name('venta.crearventa');
 
-
 //ventas
 Route::get('/ventas', [VentaController::class, 'ventas'])->name('venta.ventas');
 Route::get('/ventas/search', [VentaController::class, 'busqueda'])->name('venta.busqueda');
 Route::get('/ventas/fechas', [VentaController::class, 'filtroFechas'])->name('venta.filtrofechas');
 Route::get('/ventas/categoria', [VentaController::class, 'categoria'])->name('venta.categoria');
+Route::get('/ventas/descuento', [VentaController::class, 'descuento'])->name('venta.descuento');
 
 //vendedor
 Route::post('/vendedor', [VendedorController::class, 'addVendedor'])->name('vendedor.addvendedor');
@@ -80,6 +80,9 @@ Route::get('/gastos/filtro', [GastoController::class, 'filtrar'])->name('gasto.f
 //deudores
 Route::get('/deudores', [DeudoresController::class, 'index'])->name('deudores.index');
 
+//cuotas
+Route::get('/venta-cuota', [VentaController::class, 'ventaCuota'])->name('venta.cuota');
+
 //debug
 Route::get('/debug1', function(){
     Session()->flush();
@@ -91,5 +94,5 @@ Route::get('/debug2', function(){
 });
 
 Route::get('/debug3', function(){
-    dd(session('ticket'));
+    dd(session('stats'));
 });

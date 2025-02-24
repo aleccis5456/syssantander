@@ -7,7 +7,7 @@
                 <p class="text-center p-2 mb-2 font-semibold text-xl">Productos</p>
                 <table class=" border-none w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>                            
+                        <tr>
                             <th scope="col" class="px-2 py-1">
                                 producto
                             </th>
@@ -20,12 +20,21 @@
                             <th scope="col" class="px-2 py-1">
                                 total
                             </th>
+                            <th scope="col" class="px-2 py-1">
+                                <div class="cursor-pointer" onclick="openOpcionesDeVenta(event)">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 12h.01m6 0h.01m5.99 0h.01"/>
+                                      </svg>
+                                      
+                                </div>
+                            </th>
 
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (session('carrito') as $indice => $item)
-                            <tr class="bg-white {{ count(session('carrito')) > 1 ? 'border-b' : '' }} dark:bg-gray-800 dark:border-gray-700">                                
+                            <tr
+                                class="bg-white {{ count(session('carrito')) > 1 ? 'border-b' : '' }} dark:bg-gray-800 dark:border-gray-700">
                                 <td class="px-2 py-3">
                                     {{ Str::limit($item['nombre'], 20) }}
                                 </td>
@@ -34,37 +43,35 @@
                                     Gs.
                                 </td>
                                 <td class="px-2 py-3">
-                                    <div>
-                                        {{-- @dd(session('carrito')) --}}
-                                        @if ($item['producto']['precio'] == $item['precio'])                                            
-                                            <div class="pl-2">
-                                                <span class="font-bold">
-                                                    {{-- <a href="{{ route('carrito.add') }}">+</a> --}}
-                                                    <div class="pl-1">
-                                                        <form action="{{ route('carrito.add') }}" method="GET">
-                                                            <input type="hidden" name="producto_id" value="{{ $item['producto_id'] }}">                                                            
-                                                            <input class="cursor-pointer" type="submit" value="+">                                                
-                                                            
-                                                        </form>
-                                                    </div>                                                                                                       
+                                    <div>                                        
+                                        <div class="pl-2">
+                                            <span class="font-bold">
+                                                {{-- <a href="{{ route('carrito.add') }}">+</a> --}}
+                                                <div class="pl-1">
+                                                    <form action="{{ route('carrito.add') }}" method="GET">
+                                                        <input type="hidden" name="producto_id"
+                                                            value="{{ $item['producto_id'] }}">
+                                                        <input class="cursor-pointer" type="submit" value="+">
 
-                                                    <span class="border px-1">{{ $item['cantidad'] }}</span>
-                                                    <p>
-                                                    <a class="cursor-pointer pl-1" href="{{ route('carrito.quitar', ['indice'=>$indice]) }}">-</a>
-                                                    </p>
-                                                </span>
-                                            </div>
-                                        @else
-                                            Cantidad:
-                                            <span class="border px-1">{{ $item['cantidad'] }}</span>
-                                        @endif                                        
+                                                    </form>
+                                                </div>
+
+                                                <span class="border px-1">{{ $item['cantidad'] }}</span>
+                                                <p>
+                                                    <a class="cursor-pointer pl-1"
+                                                        href="{{ route('carrito.quitar', ['indice' => $indice]) }}">-</a>
+                                                </p>
+                                            </span>
+                                        </div>
                                 </td>
                                 <td class="px-2 py-3">
-                                    
+
                                     @php
-                                        $total = $item['precio'] * $item['cantidad']
+                                        $total = $item['precio'] * $item['cantidad'];
                                     @endphp
-                                    {{ number_format($total, 0, ',', '.' ) }} Gs.
+                                    {{ number_format($total, 0, ',', '.') }} Gs.
+                                </td>
+                                <td>
                                 </td>
                             </tr>
                         @endforeach
@@ -73,25 +80,26 @@
             </div>
         </div>
 
+        <!-- seccion de datos -->
         <div class="w-1/2 border p-3 m-2 rounded-lg shadow-lg bg-white dark:bg-gray-800">
-            <p class="text-center p-2 font-semibold text-xl">Datos</p>            
+            <p class="text-center p-2 font-semibold text-xl">Datos</p>
             <form action="{{ route('venta.crearventa') }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <input type="hidden" name="total" value="{{ App\Helpers\helper::stats()['total_pagar'] }}">
-                    <label for="cliente"
-                        class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Datos para la factura:</label>
+                    <input type="hidden" name="total" value="{{ session('precioDesc')['monto'] ?? App\Helpers\Helper::stats()['total_pagar'] }}">
+                    <label for="cliente" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Datos para la
+                        factura:</label>
                     <!-- clientes -->
                     <div class="flex items-center">
                         <select class="select2 border border-gray-800 rounded-md flex-1 p-2" name="cliente" id="cliente">
                             <option value="">-Selecciona un cliente-</option>
-                                @foreach ($clientes as $cliente)
-                                    <option value="{{ $cliente->id }}">{{ $cliente->nombre }} {{ $cliente->apellido }} | Nº:
-                                        {{ $cliente->doc }}</option>
-                                @endforeach
+                            @foreach ($clientes as $cliente)
+                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }} {{ $cliente->apellido }} | Nº:
+                                    {{ $cliente->doc }}</option>
+                            @endforeach
                         </select>
                         <!-- Botón para agregar cliente -->
-                        <button onclick="openModalUser(event)" class="p-2.5 ml-2 bg-gray-800 rounded-lg text-white"
+                        <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" onclick="openModalUser(event)" class="p-2.5 ml-2 bg-gray-800 rounded-lg text-white"
                             type="button">
                             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 24 24">
@@ -104,14 +112,15 @@
                 </div>
 
                 <!-- seleccionar vendedor -->
-                <label for="vendedor"
-                    class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Seleccionar Vendedor:</label>
-                <div class="flex items-center mb-5">                    
-                    <select id="select2" class="border border-gray-800 rounded-md flex-1 p-2" name="vendedor" id="vendedor">
+                <label for="vendedor" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">Seleccionar
+                    Vendedor:</label>
+                <div class="flex items-center mb-5">
+                    <select id="select2" class="border border-gray-800 rounded-md flex-1 p-2" name="vendedor"
+                        id="vendedor">
                         <option value="">-Selecciona un vendedor-</option>
-                            @foreach ($vendedores as $vendedor)
-                                <option value="{{ $vendedor->id }}">{{ $vendedor->name }} {{ $vendedor->apellido }} </option>
-                            @endforeach
+                        @foreach ($vendedores as $vendedor)
+                            <option value="{{ $vendedor->id }}">{{ $vendedor->name }} {{ $vendedor->apellido }} </option>
+                        @endforeach
                     </select>
                     <!-- Botón para agregar vendedor -->
                     <button onclick="openModalVend(event)" class="p-2.5 ml-2 bg-gray-800 rounded-lg text-white"
@@ -124,7 +133,7 @@
                         </svg>
                     </button>
                 </div>
-                
+
                 <!-- Método de pago -->
                 <div class="mb-5">
                     <label for="metodo_pago" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">
@@ -136,13 +145,14 @@
                         <option value="tc">Tarjeta de crédito</option>
                         <option value="td">Tarjeta de débito</option>
                         <option value="tf">Transferencia</option>
-                        <option value="ef">Efectivo</option>                        
+                        <option value="ef">Efectivo</option>
                     </select>
-                </div>             
+                </div>
 
                 <div>
                     <label for="desc">Descripcion</label>
-                    <textarea class="rounded-lg border-none bg-gray-200 focus:ring-gray-500 focus:ring-2" name="desc" id="" cols="48" rows="4"></textarea>
+                    <textarea class="rounded-lg border-none bg-gray-200 focus:ring-gray-500 focus:ring-2" name="desc" id=""
+                        cols="48" rows="4"></textarea>
                 </div>
                 <div class="mb-8">
                     <label for="tipo_venta" class="block text-sm font-medium text-gray-900 dark:text-white mb-1">
@@ -150,38 +160,58 @@
                     </label>
                     <select id="tipo_venta" name="tipo_venta"
                         class="w-full p-2 bg-gray-50 border rounded-lg text-sm dark:bg-gray-700 dark:border-gray-600">
-                        <option value="" selected>-Selecciona el tipo de venta-</option>                                      
+                        <option value="" selected>-Selecciona el tipo de venta-</option>
                         @foreach ($tipoVentas as $tipoVenta)
-                            <option value="{{ $tipoVenta->id }}">{{$tipoVenta->nombre}}</option>
-                        @endforeach                        
+                            <option value="{{ $tipoVenta->id }}">{{ $tipoVenta->nombre }}</option>
+                        @endforeach
                     </select>
-                </div>            
-
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>
-                    <span id="total"
-                        class="text-lg font-semibold text-gray-900 dark:text-white">{{ number_format(App\Helpers\helper::stats()['total_pagar'], 0, ',', '.') }}
-                        Gs.</span>
                 </div>
-            
+                @if (session('precioDesc'))
+                <div class="flex items-center justify-between mb-4">    
+                    <span class="text-lg font-semibold text-gray-900 dark:text-white">Descuento:</span>                            
+                    <span id="total" class="text-lg font-semibold text-gray-900 dark:text-white">                        
+                        @php
+                            $total = (int)session('precioDesc')['monto'] - (int)App\Helpers\Helper::stats()['total_pagar']
+                        @endphp
+                        {{ number_format($total, 0, ',', '.') }} Gs.
+                    </span>
+                </div>
+                @endif
+                <div class="flex items-center justify-between mb-4">                    
+                    <span class="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>                    
+                    <span id="total"                    
+                        class="text-lg font-semibold text-gray-900 dark:text-white">                        
+                            {{ 
+                                number_format(session('precioDesc')['monto'] ?? 
+                                App\Helpers\Helper::stats()['total_pagar'], 0, ',', '.')
+
+                            }} Gs.                        
+                    </span>
+                </div>
+
                 @include('venta.includes.confirmVentaModal')
                 <!-- Botones de acción -->
                 <div class="flex justify-end space-x-4">
-                    <button onclick="openVentaModal(event)" type="button" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                    <button onclick="openVentaModal(event)" type="button"
+                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
                         Confirmar
                     </button>
-                </div>                
-                
+                </div>
+
             </form>
         </div>
 
     </div>
 
-   @include('venta.includes.aggClienteModal')
-   @include('venta.includes.aggVendedorModal')
+    @include('venta.includes.aggClienteModal')
+    @include('venta.includes.aggVendedorModal')
+    @include('venta.includes.completarVentaModal')
+    @include('venta.includes.opcionesDeVentaModal')
+    @include('venta.includes.cuotasModal')
 
-   <script>
-     $(document).ready(function() {
+
+    <script>
+        $(document).ready(function() {
             $('.select2').select2({
                 placeholder: "Selecciona un cliente",
                 allowClear: true
@@ -194,6 +224,5 @@
                 allowClear: true
             });
         });
-   </script>
-    
+    </script>    
 @endsection

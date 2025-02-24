@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 class CarritoController extends Controller
 {
     public function add(Request $request){
+        if(session('precioDesc')){
+            Session::forget('precioDesc');
+        }   
+
         $carrito = session('carrito', []);        
         $producto = Producto::find($request->query('producto_id'));                    
         $cantidad = (int)$request->query('cantidad');
@@ -40,13 +44,17 @@ class CarritoController extends Controller
     }
 
     public function quitar($indice){
+        if(session('precioDesc')){
+            Session::forget('precioDesc');
+        }   
         $carrito = session('carrito');        
         if($carrito[$indice]['cantidad'] > 1){
             $carrito[$indice]['cantidad']--;                        
             
         }else{
             unset($carrito[$indice]);                                    
-        }       
+        }    
+    
         session(['carrito' => $carrito]);
         return back();        
     }

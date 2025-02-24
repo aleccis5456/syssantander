@@ -32,7 +32,7 @@
                         <th scope="col" class="px-6 py-3">
                             precio
                         </th>
-                        <th scope="col" class="pl-20">
+                        <th scope="col" class="px-6 py-3">
                             accion
                         </th>
                     </tr>
@@ -52,16 +52,14 @@
                         <td class="px-6 py-4">
                             {{ number_format(round($producto->precio, -2), 0, ',', '.') }} Gs.
                         </td>
-                        <td class="px-6 py-4 ">
-                            
-                            <form action="{{ route('carrito.add') }}" method="get"> 
+                        <td class="px-6 py-4 ">                            
+                            <form onclick="" action="{{ route('carrito.add') }}" method="get"> 
                                 <input type="hidden" name="producto_id" value="{{ $producto->id }}">
-                                <input class="rounded-lg w-[70px]" type="number" name="cantidad" value="1">                               
-                                <button class="m-4 py-2 px-2 border border-gray-800 rounded-lg hover:font-semibold text-gray-800 hover:underline" type="submit">
+                                <input class="rounded-lg w-[70px]" type="hidden" name="cantidad" value="1">                               
+                                <button class="border border-gray-900 rounded-lg py-2 px-1 bg-gray-800 text-white font-semibold " type="submit">
                                     Agregar
                                 </button>                                                      
                             </form> 
-
                         </td>
                     </tr>
                     @endforeach                    
@@ -69,4 +67,6 @@
             </table>
         </div>
     </div>
+
+
 @endsection

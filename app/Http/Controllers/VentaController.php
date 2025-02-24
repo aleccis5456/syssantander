@@ -230,4 +230,37 @@ class VentaController extends Controller
             'pdf' => true
         ]);
     } 
+
+    public function descuento(Request $request){
+        $request->validate([
+            'producto' => 'required',
+            'monto' => 'required',
+        ]);
+
+        $producto_id = $request->query('producto');
+        $precio_nuevo = $request->query('monto');        
+        $carrito = session('carrito');
+        $precio_desc = session(['precioDesc' => []]);
+
+        if($producto_id == 'total'){
+            $precio_desc = [
+                'monto' => $precio_nuevo
+            ];
+
+            session(['precioDesc' => $precio_desc]);
+        }else{
+            foreach($carrito as &$item){            
+                if($item['producto']['id'] == $producto_id){
+                    $item['precio'] = $precio_nuevo;
+                }
+            }
+            session(['carrito' => $carrito]);
+        }                
+        return back()->with('info', 'descuento aplicado');
+    }
+
+    public function ventaCuota(Request $request){
+        dd($request);
+
+    }
 }
